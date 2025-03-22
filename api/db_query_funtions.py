@@ -26,12 +26,20 @@ def read_users_table(user_id: int):
     db_engine = create_engine(
         f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     )
-    with db_engine.connect() as conn:
-        result = conn.execute(text("SELECT * FROM users WHERE id = :user_id"), {"user_id": user_id})
-        result_list = result.fetchall()
-        dict_result = {"id": result_list[0][0], "firstname": result_list[0][1], "lastname": result_list[0][2], "email": result_list[0][3], "password": result_list[0][4]}
-        print(dict_result)
-        return dict_result
+    if user_id is None:
+        with db_engine.connect() as conn:
+            result = conn.execute(text("SELECT * FROM users"))
+            result_list = result.fetchall()
+            dict_result = [{"id": row[0], "firstname": row[1], "lastname": row[2], "email": row[3], "password": row[4]} for row in result_list]
+            #print(dict_result)
+            return dict_result
+    else:
+        with db_engine.connect() as conn:
+            result = conn.execute(text("SELECT * FROM users WHERE id = :user_id"), {"user_id": user_id})
+            result_list = result.fetchall()
+            dict_result = {"id": result_list[0][0], "firstname": result_list[0][1], "lastname": result_list[0][2], "email": result_list[0][3], "password": result_list[0][4]}
+            #print(dict_result)
+            return dict_result
 
 # function to insert records into users table    
 def insert_users_table(firstname: str, lastname: str, email: str, password: str):

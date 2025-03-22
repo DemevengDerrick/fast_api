@@ -15,7 +15,7 @@ class User(BaseModel):
 def read_root():
     return {"Hello": "World"}
 
-@app.get("/user/{user_id}")
+@app.get("/user/")
 def read_user(user_id: int = None):
     user = dbq.read_users_table(user_id)
     print(user)
