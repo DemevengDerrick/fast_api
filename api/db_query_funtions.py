@@ -33,5 +33,26 @@ def read_users_table(user_id: int):
         print(dict_result)
         return dict_result
 
+# function to insert records into users table    
+def insert_users_table(firstname: str, lastname: str, email: str, password: str):
+    db_engine = create_engine(
+        f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
+    with db_engine.begin() as conn:
+        conn.execute(text("INSERT INTO users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)"), {"firstname": firstname, "lastname": lastname, "email": email, "password": password})
+        print("Record inserted successfully")
+
+# function to update records in users table
+def update_users_table(user_id: int, firstname: str, lastname: str, email: str, password: str):
+    db_engine = create_engine(
+        f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
+    with db_engine.begin() as conn:
+        conn.execute(text("UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, password = :password WHERE id = :user_id"), {"user_id": user_id, "firstname": firstname, "lastname": lastname, "email": email, "password": password})
+        print("Record updated successfully")
+
 if __name__ == "__main__":
+    pass
     read_users_table(41)
+    insert_users_table("John", "Doe", "demeveng@gmail.com", "test1234")
+    update_users_table(41, "John", "Doe", "demeveng@gmail3.com", "test1234")
