@@ -51,8 +51,17 @@ def update_users_table(user_id: int, firstname: str, lastname: str, email: str, 
         conn.execute(text("UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, password = :password WHERE id = :user_id"), {"user_id": user_id, "firstname": firstname, "lastname": lastname, "email": email, "password": password})
         print("Record updated successfully")
 
+# function to delete records from users table
+def delete_users_table(user_id: int):
+    db_engine = create_engine(
+        f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    )
+    with db_engine.begin() as conn:
+        conn.execute(text("DELETE FROM users WHERE id = :user_id"), {"user_id": user_id})
+        print("Record deleted successfully")
+
 if __name__ == "__main__":
-    pass
-    read_users_table(41)
-    insert_users_table("John", "Doe", "demeveng@gmail.com", "test1234")
-    update_users_table(41, "John", "Doe", "demeveng@gmail3.com", "test1234")
+    delete_users_table(41)
+    #read_users_table(41)
+    #insert_users_table("John", "Doe", "demeveng@gmail.com", "test1234")
+    #update_users_table(41, "John", "Doe", "demeveng@gmail3.com", "test1234")

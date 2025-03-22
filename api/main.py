@@ -30,3 +30,11 @@ def create_user(user: User):
 def update_user(user_id: int, user: User):
     dbq.update_users_table(user_id, user.firstname, user.lastname, user.email, user.password)
     return user
+
+@app.delete("/user/{user_id}")
+def delete_user(user_id: int):
+    dbq.delete_users_table(user_id)
+    return {f"message": "User {user_id} deleted successfully"}
+
+if __name__ == "__main__":
+    pass
