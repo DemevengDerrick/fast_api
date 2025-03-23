@@ -1,1 +1,6 @@
 fastapi[standard]==0.112.0
+uvicorn[standard]
+python-dotenv
+pydantic
+psycopg2-binary
+SQLAlchemy
