@@ -18,7 +18,7 @@ def read_root():
 @app.get("/user/")
 def read_user(user_id: int = None):
     user = dbq.read_users_table(user_id)
-    print(user)
+    #print(user)
     return user
 
 @app.post("/user/")

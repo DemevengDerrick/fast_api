@@ -69,7 +69,8 @@ def delete_users_table(user_id: int):
         print("Record deleted successfully")
 
 if __name__ == "__main__":
-    delete_users_table(41)
+    pass
+    #delete_users_table(41)
     #read_users_table(41)
     #insert_users_table("John", "Doe", "demeveng@gmail.com", "test1234")
     #update_users_table(41, "John", "Doe", "demeveng@gmail3.com", "test1234")
