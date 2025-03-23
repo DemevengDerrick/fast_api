@@ -10,9 +10,9 @@ load_dotenv()
 # Database connection details
 DB_USER = quote_plus(os.getenv("POSTGRES_USER")) 
 DB_PASSWORD = quote_plus(os.getenv("POSTGRES_PASSWORD"))
-DB_HOST = "postgres" # "postgres"
-DB_PORT = "5432" # "5432"
-DB_NAME = os.getenv("POSTGRES_DB")
+DB_HOST = quote_plus(os.getenv("DB_HOST")) # "postgres"
+DB_PORT = quote_plus(os.getenv("DB_PORT")) #"5432" # "5432"
+DB_NAME = quote_plus(os.getenv("POSTGRES_DB"))
 
 # Create a connection string
 connection_string = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/postgres"
