@@ -1,9 +1,29 @@
-from typing import Union
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from pydantic import BaseModel
 import db_query_funtions as dbq
+from typing import Annotated
+import secrets
+import os
+from urllib.parse import quote_plus
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI()
+
+security = HTTPBasic()
+
+def get_current_username(credentials: HTTPBasicCredentials = Depends(security)):
+    correct_username = secrets.compare_digest(credentials.username.encode("utf8"), os.getenv("POSTGRES_USER").encode("utf8"))
+    correct_password = secrets.compare_digest(credentials.password.encode("utf8"), os.getenv("POSTGRES_PASSWORD").encode("utf8"))
+    if not (correct_username and correct_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Basic"},
+        )
+    return credentials.username
 
 class User(BaseModel):
     firstname: str
@@ -12,8 +32,8 @@ class User(BaseModel):
     password: str
 
 @app.get("/")
-def read_root():
-    return {"Hello": "World"}
+def read_current_user(username: Annotated[str, Depends(get_current_username)]):
+    return {"Welcome ": username}
 
 @app.get("/user/")
 def read_user(user_id: int = None):
